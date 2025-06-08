@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	models "github.com/rishichirchi/go-server/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -23,6 +24,17 @@ func InitSupabase() (*gorm.DB, error) {
 		log.Fatalf("Failed to connect to Supabase: %v", err)
 	}
 	log.Println("Connected to Supabase successfully")
+
+	err = db.AutoMigrate(
+		models.MCP{},
+	)
+
+	if err != nil {
+		log.Fatalf("Failed to auto migrate models: %v", err)
+	}
+	log.Println("Auto migration completed successfully")
+
+
 
 	DB = db
 

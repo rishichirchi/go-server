@@ -18,6 +18,7 @@ func main(){
 	database.InitSupabase()
 	app.GET("/servers", handler.ListServers)
 	app.GET("/servers/:name", handler.GetServer)
+	app.POST("/push", handler.AddServer)
 
 	app.Run(":8080")
 }

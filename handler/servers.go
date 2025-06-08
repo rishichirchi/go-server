@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -30,3 +31,24 @@ func GetServer(c *gin.Context){
 
 	c.JSON(http.StatusOK, gin.H{"server": server})
 }
+
+func AddServer(c *gin.Context){
+	var server models.MCP
+
+	if err := c.ShouldBindJSON(&server); err != nil {
+		log.Println("Error binding JSON:", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+
+	if err := database.DB.Create(&server).Error; err != nil {
+		log.Println("Error adding server:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add server"})
+		return
+	}
+
+
+	log.Println("Server added successfully:", server.Name)
+	c.JSON(http.StatusCreated, gin.H{"message": "Server added successfully", "server": server})
+}
+
