@@ -15,10 +15,10 @@ func main(){
 		log.Fatalln("Error loading .env file")
 	}
 	app := gin.Default()
-	database.InitSupabase()
-	app.GET("/servers", handler.ListServers)
-	app.GET("/servers/:name", handler.GetServer)
-	app.POST("/push", handler.AddServer)
+	database.InitMongoDB()
+	app.GET("/servers", handler.ListServersM)
+	app.GET("/servers/:name", handler.GetServerM)
+	app.POST("/push", handler.AddServerM)
 
 	app.Run(":8080")
 }
